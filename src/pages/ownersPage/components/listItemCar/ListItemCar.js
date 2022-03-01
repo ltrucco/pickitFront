@@ -1,4 +1,4 @@
-import { Box, Grid} from '@mui/material'
+import { Box, Grid } from '@mui/material'
 import React from 'react'
 import { makeStyles } from '@mui/styles';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -6,15 +6,15 @@ import './ListItemCar.css'
 import CustomPopOver from '../customPopOver/CustomPopOver';
 
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles( theme => ( {
     root: {
         color: "#000",
-      "&:hover": {
-        color: '#ff6c0e',
-        cursor: 'pointer'
-      }
+        "&:hover": {
+            color: '#ff6c0e',
+            cursor: 'pointer'
+        }
     }
-  }));
+} ) );
 
 const ListItemCar = ( { car, openPopupEdit, openPopupDelete, watchedCar, viewOnly } ) => {
     const classes = useStyles();
@@ -36,7 +36,7 @@ const ListItemCar = ( { car, openPopupEdit, openPopupDelete, watchedCar, viewOnl
                         <Box display="flex" >
                             <Grid container spacing={3} style={{ alignContent: 'center', justifyContent: 'center' }}>
                                 <Grid item xs={1} style={{ alignSelf: 'center' }}>
-                                    <VisibilityIcon className={classes.root} onClick={() => watchedCar()}/>
+                                    <VisibilityIcon className={classes.root} onClick={() => watchedCar()} />
                                 </Grid>
                                 <Grid item xs={1}>
                                     <img alt='user' style={{ borderRadius: '50%', height: '40px', width: '40px' }} src={car.photo} />
@@ -59,7 +59,7 @@ const ListItemCar = ( { car, openPopupEdit, openPopupDelete, watchedCar, viewOnl
                         </Box>
 
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={2}>
                         <Grid container direction={'column'}>
                             <Grid item xs >
                                 <span className='carSubtitle'>
@@ -72,9 +72,14 @@ const ListItemCar = ( { car, openPopupEdit, openPopupDelete, watchedCar, viewOnl
                                 </span>
                             </Grid>
                         </Grid>
-                        {car.year}
+                    </Grid>
+                    <Grid item xs={2}>
+                        <span className='carYear'>
+                            {car.year}
+                        </span>
                     </Grid>
                     <Grid item xs={viewOnly ? 4 : 3}>
+
                         <Grid container direction={'column'}>
                             <Grid item xs >
                                 <span className='carSubtitle'>
@@ -89,8 +94,8 @@ const ListItemCar = ( { car, openPopupEdit, openPopupDelete, watchedCar, viewOnl
                         </Grid>
                     </Grid>
                     {!viewOnly && <Grid item xs={1} justifyContent={'flex-end'}>
-                        <i className='bx bx-dots-vertical-rounded cursorHover' style={{ fontSize: '40px', float:'right' }} onClick={handleClick}></i>
-                        <CustomPopOver anchorEl={anchorEl} handleClose={handleClose} openPopupEdit={()=> openPopupEdit()} openPopupDelete={()=> openPopupDelete()}/>
+                        <i className='bx bx-dots-vertical-rounded cursorHover' style={{ fontSize: '40px', float: 'right' }} onClick={handleClick}></i>
+                        <CustomPopOver anchorEl={anchorEl} handleClose={handleClose} openPopupEdit={() => openPopupEdit()} openPopupDelete={() => openPopupDelete()} />
                     </Grid>}
                 </Grid>
             </li>
