@@ -7,7 +7,7 @@ import { useFormik } from 'formik';
 import validationSchemaOwner from './validationSchemaOwner'
 import { ApiCalls } from '../../../../components/api/ApiCalls'
 import updateOwners from '../../../../store/owners/action'
-import CustomButton from '../customButton/CustomButton'
+import CustomButton from '../../../shared/components/customButton/CustomButton'
 import { v4 as uuidv4 } from 'uuid';
 
 const PopupEdit = ( { disableBackdropClick, updateOpenPopupEdit, updateOwners, openPopupEdit, owner } ) => {

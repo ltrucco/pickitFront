@@ -7,12 +7,14 @@ import updateOwners from '../../../../store/owners/action'
 import CustomButton from '../customButton/CustomButton'
 import { openPopupDeleteState } from '../../../../store/openPopupDelete/reducer'
 import warningIcon from '../../images/warningIcon.png'
+import updateCars from '../../../../store/cars/action'
 
-const PopupDelete = ( { disableBackdropClick, updateOpenPopupDelete, updateOwners, openPopupDelete, owner } ) => {
+const PopupDelete = ( { disableBackdropClick, updateOpenPopupDelete, updateOwners, updateCars, openPopupDelete, owner, car } ) => {
 
 
-    const deleteOwner = () => {
-        ApiCalls.deleteOwners( owner.id )
+    const deleteElement = () => {
+        if (owner){
+            ApiCalls.deleteOwners( owner.id )
             .then( ( res ) => {
                 updateOpenPopupDelete( false )
                 ApiCalls.getOwners()
@@ -26,12 +28,28 @@ const PopupDelete = ( { disableBackdropClick, updateOpenPopupDelete, updateOwner
             .catch( ( err ) => {
                 console.log( err )
             } )
+        }else{
+            ApiCalls.deleteCars( car.id )
+            .then( ( res ) => {
+                ApiCalls.getCars()
+                    .then( ( res ) => {
+                        updateCars( res.data )
+                    } )
+                    .catch( ( err ) => {
+                        console.log( err )
+                    } )
+            } )
+            .catch( ( err ) => {
+                console.log( err )
+            } )
+        }
         updateOpenPopupDelete( false )
+
     }
 
     return (
         <>
-            {owner && <Dialog
+            {(owner || car) && <Dialog
                 style={{ textAlign: "center" }}
                 maxWidth='sm'
                 fullWidth={true}
@@ -48,7 +66,7 @@ const PopupDelete = ( { disableBackdropClick, updateOpenPopupDelete, updateOwner
                     <img alt='warning' src={warningIcon} />
                     <div>
                         <span style={{ fontSize: '28px', fontWeight: 'bold' }}>
-                            ¿Seguro deseas eliminar este propietario?
+                            {`¿Seguro deseas eliminar este ${owner ? "propietario" : 'automotor'}?`}
                         </span>
                     </div>
                     <span style={{ fontSize: '19px', margin: '15px' }}>
@@ -63,7 +81,7 @@ const PopupDelete = ( { disableBackdropClick, updateOpenPopupDelete, updateOwner
                             <CustomButton handleClick={() => updateOpenPopupDelete( false )} text='Cancelar' />
                         </Grid>
                         <Grid item xs={3}>
-                            <CustomButton isConfirm={true} handleClick={() => deleteOwner()} text='Si, eliminar' />
+                            <CustomButton isConfirm={true} handleClick={() => deleteElement()} text='Si, eliminar' />
                         </Grid>
                     </Grid>
                 </DialogContent>
@@ -79,4 +97,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect( mapStateToProps, { updateOpenPopupDelete, updateOwners } )( PopupDelete )
+export default connect( mapStateToProps, { updateOpenPopupDelete, updateOwners, updateCars } )( PopupDelete )

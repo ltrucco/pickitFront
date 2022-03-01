@@ -10,15 +10,17 @@ import updateOpenPopupEdit from '../../store/openPopupEdit/action'
 import updateOpenPopupDelete from '../../store/openPopupDelete/action'
 import ListItem from './components/listItem/ListItem'
 import PopupEdit from './components/popupEdit/PopupEdit'
-import PopupDelete from './components/popupDelete/PopupDelete'
+import PopupDelete from '../shared/components/popupDelete/PopupDelete'
 import { openPopupDeleteState } from '../../store/openPopupDelete/reducer'
-import CustomButton from './components/customButton/CustomButton'
+import CustomButton from '../shared/components/customButton/CustomButton'
 import { KeyboardArrowLeft } from '@mui/icons-material'
 import { Button } from '@mui/material'
 import { ApiCalls } from '../../components/api/ApiCalls'
-import ListItemCar from './components/listItemCar/ListItemCar'
+import ListItemCar from '../shared/components/listItemCar/ListItemCar'
+import ListCar from '../shared/components/listCar/ListCar'
+import updateOwners from '../../store/owners/action'
 
-const OwnersPage = ( { owner, owners, cars,  updateSidebar, updateOpenPopupEdit, updateCars, updateOpenPopupDelete, openPopupEdit, openPopupDelete } ) => {
+const OwnersPage = ( { owner, owners, cars, updateSidebar, updateOpenPopupEdit, updateCars, updateOpenPopupDelete, openPopupEdit, openPopupDelete, updateOwners } ) => {
 
   const [selectedOwner, setSelectedOwner] = useState( null )
   const [watchedOwner, setWatchedOwner] = useState( null )
@@ -29,8 +31,20 @@ const OwnersPage = ( { owner, owners, cars,  updateSidebar, updateOpenPopupEdit,
   }, [updateSidebar] )
 
   useEffect( () => {
+    if ( owners.length < 1 ) {
+      ApiCalls.getOwners()
+        .then( ( res ) => {
+          updateOwners( res.data )
+        } )
+        .catch( ( err ) => {
+          console.log( err )
+        } )
+    }
+  }, [updateOwners] )
+
+  useEffect( () => {
     if ( watchedOwner ) {
-      updateCars([])
+      updateCars( [] )
       ApiCalls.getCars()
         .then( ( res ) => {
           updateCars( res.data )
@@ -44,6 +58,10 @@ const OwnersPage = ( { owner, owners, cars,  updateSidebar, updateOpenPopupEdit,
   const openPopupOwner = () => {
     setSelectedOwner( null )
     updateOpenPopupEdit( true )
+  }
+
+  const ownerCars = () => {
+    return cars.filter( c => c.ownerId === watchedOwner.id ) ?? []
   }
 
   return (
@@ -90,18 +108,13 @@ const OwnersPage = ( { owner, owners, cars,  updateSidebar, updateOpenPopupEdit,
               <span className='title'>
                 Automotores asignados
               </span>
-              <ul style={{ listStyle: "none", marginTop: '20px' }}>
-                {cars &&  cars.map( c => <ListItemCar key={c.id} watchedCar={() => setWatchedCar( c )} car={c} 
-                // openPopupEdit={() => {
-                //   setSelectedOwner( o )
-                //   updateOpenPopupEdit( true )
-                // }}
-                //   openPopupDelete={() => {
-                //     setSelectedOwner( o )
-                //     updateOpenPopupDelete( true )
-                //   }}
-                /> )}
-              </ul>
+              {ownerCars().length > 0 ? <ListCar cars={ownerCars()} /> :
+                <div style={{ marginTop: '20px' }}>
+                  <span className='title'>
+                    No posee autos asociados
+                  </span>
+                </div>}
+
             </div>
           </div>
         </>}
@@ -115,8 +128,8 @@ const mapStateToProps = state => {
     owners: ownersList( state ),
     openPopupEdit: openPopupEditState( state ),
     openPopupDelete: openPopupDeleteState( state ),
-    cars: carsList(state)
+    cars: carsList( state )
   }
 }
 
-export default connect( mapStateToProps, { updateSidebar, updateOpenPopupEdit, updateOpenPopupDelete, updateCars } )( OwnersPage )
+export default connect( mapStateToProps, { updateSidebar, updateOpenPopupEdit, updateOpenPopupDelete, updateCars, updateOwners } )( OwnersPage )

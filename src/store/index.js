@@ -4,6 +4,7 @@ import ownersReducer from './owners/reducer'
 import sidebarReducer from './sidebarMenu/reducer'
 import openPopupEditReducer from './openPopupEdit/reducer'
 import openPopupDeleteReducer from './openPopupDelete/reducer'
+import openPopupEditCarReducer from './openPopupEditCar/reducer'
 import carsReducer from './cars/reducer'
 
 const reducers = combineReducers({
@@ -12,6 +13,7 @@ const reducers = combineReducers({
     ownersReducer,
     openPopupEditReducer,
     openPopupDeleteReducer,
+    openPopupEditCarReducer,
     carsReducer,
 })
 

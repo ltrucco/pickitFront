@@ -3,7 +3,7 @@ import React from 'react'
 import { makeStyles } from '@mui/styles';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import './ListItemCar.css'
-import CustomPopOver from '../customPopOver/CustomPopOver';
+import CustomPopOver from '../../../ownersPage/components/customPopOver/CustomPopOver';
 
 
 const useStyles = makeStyles( theme => ( {
@@ -44,12 +44,12 @@ const ListItemCar = ( { car, openPopupEdit, openPopupDelete, watchedCar, viewOnl
                                 <Grid item xs style={{ marginLeft: '20px' }}>
                                     <Grid container direction={'column'}>
                                         <Grid item xs >
-                                            <span className='carTitle'>
+                                            <span className='title'>
                                                 {car.model}
                                             </span>
                                         </Grid>
                                         <Grid item xs >
-                                            <span className='carSubtitle'>
+                                            <span className='subtitle'>
                                                 {car.brand}
                                             </span>
                                         </Grid>
@@ -57,17 +57,16 @@ const ListItemCar = ( { car, openPopupEdit, openPopupDelete, watchedCar, viewOnl
                                 </Grid>
                             </Grid>
                         </Box>
-
                     </Grid>
                     <Grid item xs={2}>
                         <Grid container direction={'column'}>
                             <Grid item xs >
-                                <span className='carSubtitle'>
+                                <span className='subtitle'>
                                     Patente
                                 </span>
                             </Grid>
                             <Grid item xs >
-                                <span className='carSubtitle'>
+                                <span className='subtitle'>
                                     {car.domain}
                                 </span>
                             </Grid>
@@ -82,12 +81,12 @@ const ListItemCar = ( { car, openPopupEdit, openPopupDelete, watchedCar, viewOnl
 
                         <Grid container direction={'column'}>
                             <Grid item xs >
-                                <span className='carSubtitle'>
+                                <span className='subtitle'>
                                     KM
                                 </span>
                             </Grid>
                             <Grid item xs >
-                                <span className='carSubtitle'>
+                                <span className='subtitle'>
                                     {car.kms}
                                 </span>
                             </Grid>

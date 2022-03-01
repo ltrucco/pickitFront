@@ -16,8 +16,22 @@ function addOwner ( params ) {
   return api.post( '/owners', params )
 }
 
-function getCars (  ) {
+
+function addCar ( params ) {
+  return api.post( '/cars', params )
+}
+
+
+function getCars ( ) {
   return api.get( '/cars' )
+}
+
+function updateCars ( carId, params ) {
+  return api.put( '/cars/' + carId, params )
+}
+
+function deleteCars ( carId ) {
+  return api.delete( '/cars/' + carId )
 }
 
 export const ApiCalls = {
@@ -25,5 +39,8 @@ export const ApiCalls = {
     updateOwners,
     deleteOwners,
     addOwner,
-    getCars
+    getCars,
+    updateCars,
+    deleteCars,
+    addCar
 }

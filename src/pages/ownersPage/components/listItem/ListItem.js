@@ -48,12 +48,12 @@ const ListItem = ( { owner, openPopupEdit, openPopupDelete, watchedOwner, viewOn
                                 <Grid item xs style={{ marginLeft: '20px' }}>
                                     <Grid container direction={'column'}>
                                         <Grid item xs >
-                                            <span className='ownerSurname'>
+                                            <span className='title'>
                                                 {owner.surname}
                                             </span>
                                         </Grid>
                                         <Grid item xs >
-                                            <span className='ownerName'>
+                                            <span className='subtitle'>
                                                 {owner.name}
                                             </span>
                                         </Grid>
@@ -66,12 +66,12 @@ const ListItem = ( { owner, openPopupEdit, openPopupDelete, watchedOwner, viewOn
                     <Grid item xs={4}>
                         <Grid container direction={'column'}>
                             <Grid item xs >
-                                <span className='ownerName'>
+                                <span className='subtitle'>
                                     Correo electrónico
                                 </span>
                             </Grid>
                             <Grid item xs >
-                                <span className='ownerName'>
+                                <span className='subtitle'>
                                     {owner.mail}
                                 </span>
                             </Grid>
@@ -80,12 +80,12 @@ const ListItem = ( { owner, openPopupEdit, openPopupDelete, watchedOwner, viewOn
                     <Grid item xs={viewOnly ? 4 : 3}>
                         <Grid container direction={'column'}>
                             <Grid item xs >
-                                <span className='ownerName'>
+                                <span className='subtitle'>
                                     Teléfono
                                 </span>
                             </Grid>
                             <Grid item xs >
-                                <span className='ownerName'>
+                                <span className='subtitle'>
                                     {owner.phoneNumber}
                                 </span>
                             </Grid>
