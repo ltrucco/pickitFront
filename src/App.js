@@ -1,24 +1,22 @@
-import logo from './logo.svg';
 import './App.css';
+import 'boxicons/css/boxicons.min.css';
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import AppLayout from './components/layout/AppLayout';
+import ServicesPage from './pages/servicesPage/ServicesPage';
+import OwnersPage from './pages/ownersPage/OwnersPage';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<AppLayout/>}>
+          <Route index element={<ServicesPage/>} />
+          <Route path='/servicios' element={<ServicesPage/>} />
+          <Route path='/automotores' element={<OwnersPage/>} />
+          <Route path='/propietarios' element={<OwnersPage/>} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 

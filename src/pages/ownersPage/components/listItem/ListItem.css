@@ -1,0 +1,13 @@
+.carTitle{
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.carSubtitle{
+    font-size: 15px;
+    font-weight: 400;
+}
+
+.cursorHover{
+    cursor:pointer;
+}
