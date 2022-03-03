@@ -14,8 +14,8 @@ const ServicesCard = ( { services, statementsWithItems } ) => {
 
     const drawItemsList = ( items ) => {
         
-        return items.map( ( i ) =>
-            <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '5px' }}>
+        return items.map( ( i, index ) =>
+            <div key={index} style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '5px' }}>
                 <span>
                     {services.find(s=> s.id === i.serviceId).description}
                 </span>
@@ -28,23 +28,23 @@ const ServicesCard = ( { services, statementsWithItems } ) => {
     }
 
     const drawStatementsItems = () => {
-        return statementsWithItems.map( ( swi ) =>
-            <div style={{ margin: '20px ', border: '0.5px solid #cccccc', fontSize: '12px', padding: '12px 50px' }}>
+        return statementsWithItems.map( ( swi, index ) =>
+            <div key={index} style={{ margin: '20px ', border: '0.5px solid #cccccc', fontSize: '12px', padding: '12px 50px' }}>
                 <div style={{ borderBottom: '0.5px solid #e6e6e6', paddingBottom: '10px' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                         <div>
                             <span style={{ fontSize: '13px' }}>
-                                2 Oct, 2021
+                                {new Date(swi.date).toLocaleString('es-AR', {  year: 'numeric', month: 'long', day: 'numeric' })}
                             </span>
                             <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>
                                 {'Medio de pago: ' + swi.paymentMethod}
                             </span>
                         </div>
-                        <div item xs>
+                        <div>
                             <span style={{ fontSize: '13px' }}>
                                 Total
                             </span>
-                            <span style={{ marginLeft: '10px', fontWeight: 'bold' }}>
+                            <span style={{ marginLeft: '10px', fontWeight: 'bold', backgroundColor: '#f5f5f5', padding: '3px' }}>
                                 {sumItems( swi.items )}
                             </span>
                         </div>

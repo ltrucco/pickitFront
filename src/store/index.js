@@ -3,6 +3,7 @@ import ownerReducer from './owner/reducer'
 import ownersReducer from './owners/reducer'
 import sidebarReducer from './sidebarMenu/reducer'
 import openPopupEditReducer from './openPopupEdit/reducer'
+import openPopupServiceReducer from './openPopupService/reducer'
 import openPopupDeleteReducer from './openPopupDelete/reducer'
 import openPopupEditCarReducer from './openPopupEditCar/reducer'
 import carsReducer from './cars/reducer'
@@ -17,6 +18,7 @@ const reducers = combineReducers({
     openPopupEditCarReducer,
     carsReducer,
     servicesReducer,
+    openPopupServiceReducer,
 })
 
 const store = createStore(

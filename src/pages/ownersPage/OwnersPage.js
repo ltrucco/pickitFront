@@ -9,6 +9,7 @@ import updateSidebar from '../../store/sidebarMenu/action'
 import updateCars from '../../store/cars/action'
 import updateServices from '../../store/services/action'
 import updateOpenPopupEdit from '../../store/openPopupEdit/action'
+import updateOpenPopupService from '../../store/openPopupService/action'
 import updateOpenPopupDelete from '../../store/openPopupDelete/action'
 import ListItem from './components/listItem/ListItem'
 import PopupEdit from './components/popupEdit/PopupEdit'
@@ -25,8 +26,11 @@ import Select from '../servicesPage/components/select/Select'
 import OwnerCard from './components/ownerCard/OwnerCard'
 import CarCard from './components/carCard/CarCard'
 import ServicesCard from './components/servicesCard/ServicesCard'
+import { openPopupServiceState } from '../../store/openPopupService/reducer'
+import PopupService from './components/popupService/PopupService'
 
-const OwnersPage = ( { owner, owners, cars, services, updateSidebar, updateOpenPopupEdit, updateCars, updateOpenPopupDelete, openPopupEdit, openPopupDelete, updateOwners, updateServices } ) => {
+const OwnersPage = ( { owner, owners, cars, services, updateSidebar, updateOpenPopupEdit, updateOpenPopupService, updateCars, updateOpenPopupDelete,
+   openPopupService, openPopupEdit, openPopupDelete, updateOwners, updateServices } ) => {
 
   const [selectedOwner, setSelectedOwner] = useState( null )
   const [watchedOwner, setWatchedOwner] = useState( null )
@@ -59,24 +63,7 @@ const OwnersPage = ( { owner, owners, cars, services, updateSidebar, updateOpenP
 
   useEffect( () => {
     if ( statements.length > 0 ) {
-      ApiCalls.getStatementsItems()
-        .then( ( res ) => {
-          let statamentsAux = [...statements]
-          statamentsAux.forEach( s => {
-            let statementItemsAux = []
-            res.data.forEach( si => {
-              if ( si.statementId == s.id ) {
-                statementItemsAux.push( si )
-              }
-            } )
-            s.items = statementItemsAux
-          } )
-          setStatementsWithItems( statamentsAux )
-        } )
-
-        .catch( ( err ) => {
-          console.log( err )
-        } )
+      getStatementsItems()
     }
   }, [statements] )
 
@@ -136,6 +123,27 @@ const OwnersPage = ( { owner, owners, cars, services, updateSidebar, updateOpenP
       .then( ( res ) => {
         setStatements( res.data.filter( s => s.carId === watchedCar.id ) )
       } )
+      .catch( ( err ) => {
+        console.log( err )
+      } )
+  }
+
+  const getStatementsItems = () => {
+    ApiCalls.getStatementsItems()
+      .then( ( res ) => {
+        let statamentsAux = [...statements]
+        statamentsAux.forEach( s => {
+          let statementItemsAux = []
+          res.data.forEach( si => {
+            if ( si.statementId === s.id ) {
+              statementItemsAux.push( si )
+            }
+          } )
+          s.items = statementItemsAux
+        } )
+        setStatementsWithItems( statamentsAux )
+      } )
+
       .catch( ( err ) => {
         console.log( err )
       } )
@@ -202,7 +210,7 @@ const OwnersPage = ( { owner, owners, cars, services, updateSidebar, updateOpenP
   const returnButton = ( type ) => {
     return (
       <Button variant="contained" style={{ backgroundColor: 'transparent', color: '#000', border: 'none', boxShadow: 'none', float: 'right' }}
-        startIcon={<KeyboardArrowLeft />} onClick={() => { type == 'owner' ? setWatchedOwner( null ) : setWatchedCar( null ) }} >
+        startIcon={<KeyboardArrowLeft />} onClick={() => { type === 'owner' ? setWatchedOwner( null ) : setWatchedCar( null ) }} >
         Regresar
       </Button>
     )
@@ -255,7 +263,10 @@ const OwnersPage = ( { owner, owners, cars, services, updateSidebar, updateOpenP
         </span>
         <OwnerCard owner={watchedOwner} />
         <CarCard car={watchedCar} />
-        <ServicesCard services={services} statementsWithItems={statementsWithItems}/>
+        <ServicesCard services={services} statementsWithItems={statementsWithItems} />
+        <div style={{ float: 'right', marginRight: '20%', marginTop: '20px', marginBottom: '20px' }}>
+          <CustomButton  isConfirm={true} handleClick={() => updateOpenPopupService(true)} text='+ Nuevo servicio' />
+        </div>
       </>
     )
   }
@@ -264,6 +275,7 @@ const OwnersPage = ( { owner, owners, cars, services, updateSidebar, updateOpenP
     <>
       {!watchedOwner ? drawOwnersSection() : ( watchedCar ? drawCarSection() : drawOwnerCarsSection() )}
       {openPopupEdit && <PopupEdit disableBackdropClick owner={selectedOwner} />}
+      {openPopupService && <PopupService disableBackdropClick />}
       {openPopupDelete && <PopupDelete title={`¿Seguro deseas ${carToAssociate ? 'asociar este automotor' : 'eliminar este propietario'}?`}
         subtitle={`${carToAssociate ? 'Esta accion puede revertirse luego' : 'Al eliminarlo se perderán los cambios realizados hasta el momento, de forma permanente.'}`}
         confirmAction={( ow ) => carToAssociate ? associateCar( ow ) : deleteOwner( ow )} disableBackdropClick owner={selectedOwner} car={carToAssociate} />}
@@ -276,10 +288,11 @@ const mapStateToProps = state => {
     owner: selectActiveOwner( state ),
     owners: ownersList( state ),
     openPopupEdit: openPopupEditState( state ),
+    openPopupService: openPopupServiceState( state ),
     openPopupDelete: openPopupDeleteState( state ),
     cars: carsList( state ),
     services: servicesList( state )
   }
 }
 
-export default connect( mapStateToProps, { updateSidebar, updateOpenPopupEdit, updateOpenPopupDelete, updateCars, updateOwners, updateServices } )( OwnersPage )
+export default connect( mapStateToProps, { updateSidebar, updateOpenPopupEdit, updateOpenPopupDelete, updateCars, updateOwners, updateServices, updateOpenPopupService } )( OwnersPage )
