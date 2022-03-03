@@ -2,49 +2,16 @@ import { Dialog, DialogContent, Grid } from '@mui/material'
 import React from 'react'
 import { connect } from 'react-redux'
 import updateOpenPopupDelete from '../../../../store/openPopupDelete/action'
-import { ApiCalls } from '../../../../components/api/ApiCalls'
-import updateOwners from '../../../../store/owners/action'
 import CustomButton from '../customButton/CustomButton'
 import { openPopupDeleteState } from '../../../../store/openPopupDelete/reducer'
 import warningIcon from '../../images/warningIcon.png'
-import updateCars from '../../../../store/cars/action'
 
-const PopupDelete = ( { disableBackdropClick, updateOpenPopupDelete, updateOwners, updateCars, openPopupDelete, owner, car } ) => {
+const PopupDelete = ( { disableBackdropClick, updateOpenPopupDelete,   openPopupDelete, owner, car, title, subtitle, confirmAction } ) => {
 
 
-    const deleteElement = () => {
-        if (owner){
-            ApiCalls.deleteOwners( owner.id )
-            .then( ( res ) => {
-                updateOpenPopupDelete( false )
-                ApiCalls.getOwners()
-                    .then( ( res ) => {
-                        updateOwners( res.data )
-                    } )
-                    .catch( ( err ) => {
-                        console.log( err )
-                    } )
-            } )
-            .catch( ( err ) => {
-                console.log( err )
-            } )
-        }else{
-            ApiCalls.deleteCars( car.id )
-            .then( ( res ) => {
-                ApiCalls.getCars()
-                    .then( ( res ) => {
-                        updateCars( res.data )
-                    } )
-                    .catch( ( err ) => {
-                        console.log( err )
-                    } )
-            } )
-            .catch( ( err ) => {
-                console.log( err )
-            } )
-        }
+    const confirm = () => {
+        confirmAction(owner || car)
         updateOpenPopupDelete( false )
-
     }
 
     return (
@@ -66,11 +33,11 @@ const PopupDelete = ( { disableBackdropClick, updateOpenPopupDelete, updateOwner
                     <img alt='warning' src={warningIcon} />
                     <div>
                         <span style={{ fontSize: '28px', fontWeight: 'bold' }}>
-                            {`¿Seguro deseas eliminar este ${owner ? "propietario" : 'automotor'}?`}
+                            {title}
                         </span>
                     </div>
                     <span style={{ fontSize: '19px', margin: '15px' }}>
-                        Al eliminarlo se perderán los cambios realizados hasta el momento, de forma permanente.
+                        {subtitle}
                     </span>
                 </div>
                 <DialogContent>
@@ -81,7 +48,7 @@ const PopupDelete = ( { disableBackdropClick, updateOpenPopupDelete, updateOwner
                             <CustomButton handleClick={() => updateOpenPopupDelete( false )} text='Cancelar' />
                         </Grid>
                         <Grid item xs={3}>
-                            <CustomButton isConfirm={true} handleClick={() => deleteElement()} text='Si, eliminar' />
+                            <CustomButton isConfirm={true} handleClick={() => confirm()} text='Confirmar' />
                         </Grid>
                     </Grid>
                 </DialogContent>
@@ -97,4 +64,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect( mapStateToProps, { updateOpenPopupDelete, updateOwners, updateCars } )( PopupDelete )
+export default connect( mapStateToProps, { updateOpenPopupDelete } )( PopupDelete )

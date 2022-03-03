@@ -1,5 +1,4 @@
 const updateOwners = owners => {
-    console.log(owners)
     return{
         type: 'UPDATE_OWNERS',
         payload: owners

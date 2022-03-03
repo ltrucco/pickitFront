@@ -10,10 +10,10 @@ import updateOpenPopupDelete from '../../../../store/openPopupDelete/action'
 import CustomButton from '../customButton/CustomButton'
 import PopupEdit from '../../../carsPage/components/popupEdit/PopupEdit'
 import PopupDelete from '../popupDelete/PopupDelete'
+import { ApiCalls } from '../../../../components/api/ApiCalls'
 
-const ListCar = ( { cars, updateSidebar, updateOpenPopupEditCar, updateOpenPopupDelete, updateCars, openPopupEditCar, openPopupDelete, addNewCar } ) => {
+const ListCar = ( { cars, updateSidebar, updateOpenPopupEditCar, updateOpenPopupDelete, updateCars, openPopupEditCar, openPopupDelete, addNewCar, setWatchedCar } ) => {
     const [selectedCar, setSelectedCar] = useState( null )
-    const [watchedCar, setWatchedCar] = useState( null )
 
 
     const openPopupCar = () => {
@@ -21,6 +21,21 @@ const ListCar = ( { cars, updateSidebar, updateOpenPopupEditCar, updateOpenPopup
         updateOpenPopupEditCar( true )
     }
 
+    const deleteCar = ( ca ) => {
+        ApiCalls.deleteCars( ca.id )
+            .then( ( res ) => {
+                ApiCalls.getCars()
+                    .then( ( res ) => {
+                        updateCars( res.data )
+                    } )
+                    .catch( ( err ) => {
+                        console.log( err )
+                    } )
+            } )
+            .catch( ( err ) => {
+                console.log( err )
+            } )
+    }
 
     return (
         <div>
@@ -40,7 +55,11 @@ const ListCar = ( { cars, updateSidebar, updateOpenPopupEditCar, updateOpenPopup
                 <CustomButton isConfirm={true} handleClick={() => openPopupCar()} text='+ Nuevo automotor' />
             </div>}
             {openPopupEditCar && <PopupEdit disableBackdropClick car={selectedCar} />}
-            {openPopupDelete && <PopupDelete disableBackdropClick car={selectedCar} />}
+            {openPopupDelete && <PopupDelete title={'¿Seguro deseas eliminar este automotor?'}
+                subtitle={'Al eliminarlo se perderán los cambios realizados hasta el momento, de forma permanente.'}
+                confirmAction={( ca ) => deleteCar( ca )}
+                disableBackdropClick car={selectedCar} />}
+
         </div>
     )
 }

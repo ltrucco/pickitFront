@@ -1,4 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap');
+
+@font-face {
+  font-family: 'ubuntu-regular';
+  src: url('./fonts/ubuntu-regular-webfont.ttf');
+  src: url('./fonts/ubuntu-regular-webfont.eot') format('embedded-opentype'),
+       url('./fonts/ubuntu-regular-webfont.woff') format('woff'),
+       url('./fonts/ubuntu-regular-webfont.ttf') format('truetype'),
+       url('./fonts/ubuntu-regular-webfont.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
 
 *{
   padding:0;
@@ -9,7 +20,7 @@
 body{
   background-color: #f0f0f0;
   color: #2b2b2b;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'ubuntu-regular';
 }
 
 a {
@@ -19,4 +30,8 @@ a {
 
 .cursorHover{
   cursor:pointer;
+}
+
+.MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"] {
+  background: #ffff
 }

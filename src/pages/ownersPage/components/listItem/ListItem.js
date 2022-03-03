@@ -28,10 +28,6 @@ const ListItem = ( { owner, openPopupEdit, openPopupDelete, watchedOwner, viewOn
         setAnchorEl( null );
     };
 
-    const handleClickOption = ( option ) => {
-        console.log( option )
-    }
-
     return (
         <>
             <li>
@@ -93,7 +89,7 @@ const ListItem = ( { owner, openPopupEdit, openPopupDelete, watchedOwner, viewOn
                     </Grid>
                     {!viewOnly && <Grid item xs={1} justifyContent={'flex-end'}>
                         <i className='bx bx-dots-vertical-rounded cursorHover' style={{ fontSize: '40px', float:'right' }} onClick={handleClick}></i>
-                        <CustomPopOver anchorEl={anchorEl} handleClose={handleClose} openPopupEdit={()=> openPopupEdit()} handleClickOption={( option ) => handleClickOption( option )} openPopupDelete={()=> openPopupDelete()}/>
+                        <CustomPopOver anchorEl={anchorEl} handleClose={handleClose} openPopupEdit={()=> openPopupEdit()}  openPopupDelete={()=> openPopupDelete()}/>
                     </Grid>}
                 </Grid>
             </li>

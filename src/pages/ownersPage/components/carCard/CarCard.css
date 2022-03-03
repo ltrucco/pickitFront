@@ -1,0 +1,19 @@
+.carBrand{
+    font-size: 20px;
+    font-weight: 400;
+    color: #ff6c0e;
+}
+
+.carModel{
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.carData{
+    font-weight: 400;
+    font-size: 15px;
+}
+
+.carTitle{
+    font-weight: bold;
+}

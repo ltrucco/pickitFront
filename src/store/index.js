@@ -6,6 +6,7 @@ import openPopupEditReducer from './openPopupEdit/reducer'
 import openPopupDeleteReducer from './openPopupDelete/reducer'
 import openPopupEditCarReducer from './openPopupEditCar/reducer'
 import carsReducer from './cars/reducer'
+import servicesReducer from './services/reducer'
 
 const reducers = combineReducers({
     ownerReducer,
@@ -15,6 +16,7 @@ const reducers = combineReducers({
     openPopupDeleteReducer,
     openPopupEditCarReducer,
     carsReducer,
+    servicesReducer,
 })
 
 const store = createStore(

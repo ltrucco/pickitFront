@@ -25,6 +25,7 @@ const PopupEdit = ( { disableBackdropClick, updateOpenPopupEditCar, updateCars, 
     validationSchema: validationSchemaCar,
     onSubmit: ( values, { resetForm } ) => {
       if ( car ) {
+        values.ownerId = car.ownerId
         ApiCalls.updateCars( car.id, values )
           .then( () => {
             updateOpenPopupEditCar( false )
@@ -41,7 +42,7 @@ const PopupEdit = ( { disableBackdropClick, updateOpenPopupEditCar, updateCars, 
           } )
       } else {
         values.id = uuidv4()
-        values.ownerId = car.ownerId
+        values.ownerId = null
         ApiCalls.addCar( values )
           .then( () => {
             updateOpenPopupEditCar( false )

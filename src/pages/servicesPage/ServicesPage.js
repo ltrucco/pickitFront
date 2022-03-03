@@ -22,8 +22,8 @@ const ServicesPage = ({updateOwner, updateOwners, owners}) => {
     }, [updateOwners])
 
     const selectOwner = (v) => {
-        updateOwner(v)
-        navigate("/propietarios");
+        // updateOwner(v)
+        navigate("/propietarios",{state: {owner:v}});
     }
 
     return (
@@ -32,7 +32,7 @@ const ServicesPage = ({updateOwner, updateOwners, owners}) => {
                 Servicios
             </span>
             <div className='select'>
-                <Select data={owners}  handleChangeSelectedOption={(e, v) => selectOwner(v)} placeholder='Busca un propietario'/>
+                <Select data={owners} field1='name' field2='surname'  handleChangeSelectedOption={(e, v) => selectOwner(v)} placeholder='Busca un propietario'/>
             </div>
             
         </div>
