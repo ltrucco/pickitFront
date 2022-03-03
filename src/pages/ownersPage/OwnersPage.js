@@ -149,6 +149,12 @@ const OwnersPage = ( { owner, owners, cars, services, updateSidebar, updateOpenP
       } )
   }
 
+  const loadStatements = () => {
+    setStatements([])
+    setStatementsWithItems([])
+    getStatements()
+  }
+
   const openPopupOwner = () => {
     setSelectedOwner( null )
     updateOpenPopupEdit( true )
@@ -275,7 +281,7 @@ const OwnersPage = ( { owner, owners, cars, services, updateSidebar, updateOpenP
     <>
       {!watchedOwner ? drawOwnersSection() : ( watchedCar ? drawCarSection() : drawOwnerCarsSection() )}
       {openPopupEdit && <PopupEdit disableBackdropClick owner={selectedOwner} />}
-      {openPopupService && <PopupService disableBackdropClick />}
+      {openPopupService && <PopupService disableBackdropClick watchedCar={watchedCar} loadStatements={() => loadStatements()} />}
       {openPopupDelete && <PopupDelete title={`¿Seguro deseas ${carToAssociate ? 'asociar este automotor' : 'eliminar este propietario'}?`}
         subtitle={`${carToAssociate ? 'Esta accion puede revertirse luego' : 'Al eliminarlo se perderán los cambios realizados hasta el momento, de forma permanente.'}`}
         confirmAction={( ow ) => carToAssociate ? associateCar( ow ) : deleteOwner( ow )} disableBackdropClick owner={selectedOwner} car={carToAssociate} />}

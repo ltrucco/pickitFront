@@ -41,9 +41,18 @@ function getStatements ( ) {
   return api.get( '/statements' )
 }
 
+function addStatements ( params ) {
+  return api.post( '/statements', params )
+}
+
 function getStatementsItems ( ) {
   return api.get( '/statementsitems' )
 }
+
+function addStatementsItems ( params ) {
+  return api.post( '/statementsitems', params )
+}
+
 
 export const ApiCalls = {
     getOwners,
@@ -56,6 +65,8 @@ export const ApiCalls = {
     addCar,
     getServices,
     getStatements,
-    getStatementsItems
+    getStatementsItems,
+    addStatements,
+    addStatementsItems
 
 }

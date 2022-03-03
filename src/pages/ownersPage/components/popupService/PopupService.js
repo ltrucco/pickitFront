@@ -6,11 +6,15 @@ import { Checkbox, Dialog, DialogContent, FormControlLabel, Grid } from '@mui/ma
 import { connect } from 'react-redux'
 import CustomButton from '../../../shared/components/customButton/CustomButton'
 import { SettingsInputComponent } from '@mui/icons-material'
+import { ApiCalls } from '../../../../components/api/ApiCalls'
+import { v4 as uuidv4 } from 'uuid';
+import Select from '../../../servicesPage/components/select/Select'
 
-const PopupService = ( { updatePopupService, openPopupService, disableBackdropClick, services, updateOpenPopupService } ) => {
+const PopupService = ( { watchedCar, updatePopupService, openPopupService, disableBackdropClick, services, updateOpenPopupService, loadStatements} ) => {
 
     const [servicesChecked, setServicesChecked] = useState( [] )
-    const [total, setTotal] = useState(0)
+    const [total, setTotal] = useState( 0 )
+    const [selectedMethod, setSelectedMethod] = useState( { description: 'Debito' } )
 
     useEffect( () => {
         if ( services ) {
@@ -28,14 +32,50 @@ const PopupService = ( { updatePopupService, openPopupService, disableBackdropCl
     }, [servicesChecked] )
 
     const handleChange = ( event ) => {
-        let servicesCheckedAux = {...servicesChecked}
+        let servicesCheckedAux = { ...servicesChecked }
         servicesCheckedAux[event.target.name] = !servicesCheckedAux[event.target.name]
         setServicesChecked( servicesCheckedAux )
     }
 
+    const saveNewService = () => {
+        console.log( watchedCar )
+        console.log( servicesChecked )
+        let statementId = uuidv4()
+        let valuesStatements = {
+            id: statementId,
+            carId: watchedCar.id,
+            paymentMethod: selectedMethod.description,
+            date: new Date()
+        }
+
+        ApiCalls.addStatements( valuesStatements )
+            .then( () => {
+                for ( const property in servicesChecked ) {
+                    if ( servicesChecked[property] ) {
+                        let valuesStatementsItems = {
+                            id: uuidv4(),
+                            serviceId: services.find( ser => ser.description === property ).id,
+                            statementId: statementId
+                        }
+                        ApiCalls.addStatementsItems( valuesStatementsItems )
+                            .catch( ( err ) => {
+                                console.log( err )
+                            } )
+                    }
+                }
+            } )
+            .catch( ( err ) => {
+                console.log( err )
+            } )
+            .finally(() => {
+                loadStatements()
+            })
+        updateOpenPopupService( false )
+    }
+
     const drawServices = () => {
         return services.map( ( s, i ) =>
-            <div key={'service'+i}style={{ padding: '20px 0px', display: 'flex', borderBottom: '0.5px solid #e6e6e6', justifyContent: 'space-between' }}>
+            <div key={'service' + i} style={{ padding: '20px 0px', display: 'flex', borderBottom: '0.5px solid #e6e6e6', justifyContent: 'space-between' }}>
                 <FormControlLabel
                     control={
                         <Checkbox
@@ -59,12 +99,12 @@ const PopupService = ( { updatePopupService, openPopupService, disableBackdropCl
 
     const getTotalSum = () => {
         let sum = 0
-        services.forEach(s=>{
-            if (servicesChecked[s.description]){
+        services.forEach( s => {
+            if ( servicesChecked[s.description] ) {
                 sum = sum + s.price
             }
-        })
-        setTotal(sum)
+        } )
+        setTotal( sum )
     }
 
     return (
@@ -100,14 +140,21 @@ const PopupService = ( { updatePopupService, openPopupService, disableBackdropCl
                             {total}
                         </span>
                     </div>
+                    <div style={{ padding: '20px 0px' }}>
+                        <Select value={selectedMethod} data={[{ description: 'Debito' }, { description: 'Efectivo' }]} field1='description' handleChangeSelectedOption={( e, v ) => setSelectedMethod( v )}
+                            placeholder='Medio de pago' />
+
+                    </div>
                 </div>
+
+
                 <Grid container spacing={0} alignItems="center"
                     justifyContent="center">
                     <Grid item xs={3}>
                         <CustomButton handleClick={() => updateOpenPopupService( false )} text='Cancelar' />
                     </Grid>
                     <Grid item xs={3}>
-                        <CustomButton isConfirm={true} handleClick={() => updateOpenPopupService( false )} text='Guardar' />
+                        <CustomButton isConfirm={true} handleClick={() => saveNewService()} text='Guardar' />
                     </Grid>
                 </Grid>
             </DialogContent>

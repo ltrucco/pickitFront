@@ -63,7 +63,12 @@ const ServicesCard = ( { services, statementsWithItems } ) => {
                 <span className='title'>
                     Servicios anteriores
                 </span>
-                {drawStatementsItems()}
+                {statementsWithItems.length > 0 ? drawStatementsItems() :
+                <div style={{paddingTop: '20px'}}>
+                    <span>
+                    No cuenta con servicios registrados
+                    </span>
+                </div>}
             </CardContent>
         </Card>
     )
