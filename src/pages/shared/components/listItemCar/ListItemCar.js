@@ -1,4 +1,4 @@
-import { Box, Grid } from '@mui/material'
+import { Alert, Box, Grid, Snackbar } from '@mui/material'
 import React from 'react'
 import { makeStyles } from '@mui/styles';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -19,6 +19,7 @@ const useStyles = makeStyles( theme => ( {
 const ListItemCar = ( { car, openPopupEdit, openPopupDelete, watchedCar, viewOnly } ) => {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState( null )
+    const [openSnackbar, setOpenSnackbar] = React.useState( false )
 
     const handleClick = ( event ) => {
         setAnchorEl( event.currentTarget )
@@ -28,6 +29,21 @@ const ListItemCar = ( { car, openPopupEdit, openPopupDelete, watchedCar, viewOnl
         setAnchorEl( null );
     };
 
+    const checkCarOwner = () => {
+        if ( car.ownerId )
+            watchedCar()
+        else
+            setOpenSnackbar( true )
+    }
+
+    const handleCloseSnackbar = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+    
+        setOpenSnackbar(false);
+      };
+
     return (
         <>
             <li>
@@ -36,7 +52,7 @@ const ListItemCar = ( { car, openPopupEdit, openPopupDelete, watchedCar, viewOnl
                         <Box display="flex" >
                             <Grid container spacing={3} style={{ alignContent: 'center', justifyContent: 'center' }}>
                                 <Grid item xs={1} style={{ alignSelf: 'center' }}>
-                                    <VisibilityIcon className={classes.root} onClick={() => watchedCar()} />
+                                    <VisibilityIcon className={classes.root} onClick={() => checkCarOwner()} />
                                 </Grid>
                                 <Grid item xs={1}>
                                     <img alt='user' style={{ borderRadius: '50%', height: '40px', width: '40px' }} src={car.photo} />
@@ -98,6 +114,12 @@ const ListItemCar = ( { car, openPopupEdit, openPopupDelete, watchedCar, viewOnl
                     </Grid>}
                 </Grid>
             </li>
+            {<Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleCloseSnackbar}>
+                <Alert onClose={handleCloseSnackbar} severity="warning" sx={{ width: '100%' }}>
+                    No se puede visualizar el automotor porque no posee un dueño asociado
+                </Alert>
+            </Snackbar>}
+
         </>
     )
 }

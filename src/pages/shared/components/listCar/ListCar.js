@@ -39,7 +39,7 @@ const ListCar = ( { cars, updateSidebar, updateOpenPopupEditCar, updateOpenPopup
 
     return (
         <div>
-            <ul style={{ listStyle: "none", marginTop: '20px' }}>
+            <ul style={{ listStyle: "none", marginTop: '20px', marginRight: '20px' }}>
                 {cars && cars.map( c => <ListItemCar key={c.id} watchedCar={() => setWatchedCar( c )} car={c}
                     openPopupEdit={() => {
                         setSelectedCar( c )

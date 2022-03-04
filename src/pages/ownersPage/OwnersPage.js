@@ -194,7 +194,7 @@ const OwnersPage = ( { owner, owners, cars, services, updateSidebar, updateOpenP
           <span className='title'>
             Listado de propietarios
           </span>
-          <ul style={{ listStyle: "none", marginTop: '20px' }}>
+          <ul style={{ listStyle: "none", marginTop: '20px', marginRight: '20px' }}>
             {owners.map( o => <ListItem key={o.id} watchedOwner={() => setWatchedOwner( o )} owner={o} openPopupEdit={() => {
               setSelectedOwner( o )
               updateOpenPopupEdit( true )
